@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  weasyprint:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - WEASYPRINT_API_KEY=${WEASYPRINT_API_KEY:-development-key-123}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+      - HOST=0.0.0.0
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
